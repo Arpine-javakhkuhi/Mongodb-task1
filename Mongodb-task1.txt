@@ -1,0 +1,36 @@
+'Create a database  users and tasks collections'
+
+'create db using mongo shell'
+use.users
+
+'create tasks collections'
+db.users.insert({title: "First task", text: "This is my first task", completed: true, created: new Date(), updated: new Date()});
+
+'create users collections + insert user'
+db.users.insert({name: "Armen", age: 29, gender: "male"})
+
+'update user’s name for given _id'
+db.users.update({_id:ObjectId("61c85ce75f27afd400f73be3")}, {$set: {name: "Arman"}} )
+
+'Create get all users script (retrieving the only username) and sorted by username:'
+db.users.find({}, {_id: 0, name:1}).sort({name:1})
+
+'Create a script that returns only female users'
+db.users.find({gender: "female"})
+
+'Create a script to update all tasks completed = false'
+db.tasks.updateMany({completed: true}, {$set: {completed: false}})
+
+
+'Create a script to delete all tasks that have been created yesterday'
+db.tasks.remove({"created": {
+    "$lt":new Date(ISODate().getTime() - 24 * 60 * 60 * 1000,
+    "$gt": new Date(ISODate().getTime() - 48 * 60 * 60 * 1000
+}});
+
+
+'Create a script to get all tasks of user sorted by created date that are not completed.'
+db.users.aggregate([
+    {$match: {completed: false}},
+    {$sort: {created: 1}}
+]);
