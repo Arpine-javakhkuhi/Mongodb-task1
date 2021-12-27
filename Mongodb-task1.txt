@@ -4,10 +4,10 @@
 use.users
 
 'create tasks collections'
-db.users.insert({title: "First task", text: "This is my first task", completed: true, created: new Date(), updated: new Date()});
+db.users.insert({title: "First task", text: "This is my first task", completed: true, createdAt: new Date(), updatedAt: new Date()});
 
 'create users collections + insert user'
-db.users.insert({name: "Armen", age: 29, gender: "male"})
+db.users.insert({name: "Armen", age: 29, gender: "male", tasks: []})
 
 'update user’s name for given _id'
 db.users.update({_id:ObjectId("61c85ce75f27afd400f73be3")}, {$set: {name: "Arman"}} )
@@ -23,14 +23,14 @@ db.tasks.updateMany({completed: true}, {$set: {completed: false}})
 
 
 'Create a script to delete all tasks that have been created yesterday'
-db.tasks.remove({"created": {
+db.tasks.remove({"createdAt": {
     "$lt":new Date(ISODate().getTime() - 24 * 60 * 60 * 1000,
     "$gt": new Date(ISODate().getTime() - 48 * 60 * 60 * 1000
 }});
 
 
 'Create a script to get all tasks of user sorted by created date that are not completed.'
-db.users.aggregate([
-    {$match: {completed: false}},
-    {$sort: {created: 1}}
+db.tasks.aggregate([
+    {$match: {userid:ObjectId("61c85ce75f27afd400f73be3"), completed: false}},
+    {$sort: {createdAt: 1}}
 ]);
