@@ -24,8 +24,8 @@ db.tasks.updateMany({completed: true}, {$set: {completed: false}})
 
 'Create a script to delete all tasks that have been created yesterday'
 db.tasks.remove({"createdAt": {
-    "$lt": new Date(ISODate().getTime() - 24 * 60 * 60 * 1000),
-    "$gt": new Date(ISODate().getTime() - 48 * 60 * 60 * 1000)
+    "$lt": new Date() - 24*60*60*100,
+    "$gt": new Date() - 48*60*60*100
 }});
 
 
